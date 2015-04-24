@@ -1,18 +1,14 @@
 package org.fxyz.tests;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
@@ -21,24 +17,16 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
 import javafx.scene.shape.CullFace;
-import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Sphere;
-import javafx.scene.shape.TriangleMesh;
-import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.fxyz.cameras.CameraTransformer;
 import org.fxyz.geometry.Point3D;
+import org.fxyz.shapes.composites.PolyLine3D;
 import org.fxyz.shapes.primitives.CuboidMesh;
-import org.fxyz.utils.Axes;
 import org.fxyz.utils.DensityFunction;
-import org.fxyz.utils.OBJWriter;
 
 /**
  *
@@ -130,6 +118,11 @@ public class CuboidTest extends Application {
         // FACES
         cuboid2.setTextureModeFaces(1530);
         group.getChildren().addAll(cuboid2);
+        List<Point3D> list = new ArrayList<>();
+        list.add(new Point3D(0, 0, 0));
+        list.add(new Point3D(100, 0, 0));
+        PolyLine3D line = new PolyLine3D(list, 1, Color.RED);
+        group.getChildren().add(line);
         Rotate rotateFirst = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
         Rotate rotateSecond = new Rotate(0, -7, 0, 0, Rotate.Y_AXIS);
         cuboid2.getTransforms().add(rotateFirst);
@@ -144,8 +137,8 @@ public class CuboidTest extends Application {
 
         cuboid3 = new CuboidMesh(5f, 5f, 10f, 1);
         cuboid3.translateYCoor(-2.5);
-        cuboid3.translateXCoor(10);
-        cuboid3.translateZCoor(7.5);
+        cuboid3.translateXCoor(15);
+        cuboid3.translateZCoor(2.5);
         cuboid3.setDrawMode(DrawMode.FILL);
         cuboid3.setCullFace(CullFace.BACK);
         // NONE
@@ -215,6 +208,9 @@ public class CuboidTest extends Application {
             }
         });
 
+        cuboid.updateFigureMesh();
+        cuboid2.updateFigureMesh();
+        cuboid3.updateFigureMesh();
         lastEffect = System.nanoTime();
         AtomicInteger count = new AtomicInteger();
         AnimationTimer timerEffect = new AnimationTimer() {
@@ -238,7 +234,28 @@ public class CuboidTest extends Application {
                     cuboid.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
                     cuboid2.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
                     cuboid3.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
+                    firstAngle += 0.3;
+
+                    Point3D p = new Point3D(1, 0, 0);
+//                    .rotPoint(p, firstAngle);
+                    p = p.normalize();
+                    cuboid2.translateYCoor(2.5);
+                    cuboid2.rotateAroundAxis(p, 0.03);
+                    cuboid2.translateYCoor(-2.5);
+                    cuboid3.translateYCoor(2.5);
+                    cuboid3.rotateAroundAxis(p, 0.03);
+                    cuboid3.translateYCoor(-2.5);
                     count.getAndIncrement();
+
+                    cuboid3.translateYCoor(2.5);
+                    Point3D z = new Point3D(1, 0, 0);
+                    z = z.normalize();
+                    cuboid3.rotateAroundAxis(z, 0.03);
+                    cuboid3.translateYCoor(-2.5);
+
+                    cuboid2.updateFigureMesh();
+                    cuboid3.updateFigureMesh();
+
                     lastEffect = now;
                 }
             }
@@ -251,6 +268,7 @@ public class CuboidTest extends Application {
 //        writer.setMaterialColor(Color.AQUA);
 //        writer.setTextureImage(getClass().getResource("res/netCuboid.png").toExternalForm());
     }
+    private double firstAngle = 0;
 
     /**
      * @param args the command line arguments

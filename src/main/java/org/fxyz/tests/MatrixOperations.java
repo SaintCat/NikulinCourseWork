@@ -14,13 +14,13 @@ public class MatrixOperations {
 
     public static void rotPoint(Point3D p, double angle) {
         double[][] ss = createRotateMatr(angle);
-        double[][] tmp = new double[][]{{p.x,p.z,p.y}};
+        double[][] tmp = new double[][]{{p.x, p.z, p.y}};
         double[][] rew = multiply(tmp, ss);
         p.x = (float) rew[0][0];
         p.z = (float) rew[0][1];
 //        p.z = (float) rew[0][2];
     }
-    
+
     public static double[][] createRotateMatr(double angle) {
         double[][] res = new double[3][3];
         res[0][0] = Math.cos(angle);
@@ -34,7 +34,7 @@ public class MatrixOperations {
         res[2][2] = 1;
         return res;
     }
-    
+
     public static double[][] createScalingMatrix(double mx, double my) {
         double[][] res = new double[2][2];
         res[0][0] = mx;
@@ -125,7 +125,7 @@ public class MatrixOperations {
         }
         return res;
     }
-    
+
     public static double[][] substract(double[][] mA, double[][] mB) {
         int m = mA.length;
         int n = mA[0].length;
@@ -308,6 +308,26 @@ public class MatrixOperations {
             }
         }
         return 1;
+    }
+
+    public static double[][] createRotateMatrixAroundAxis(Point3D r, double f) {
+        double[][] res = new double[3][3];
+        res[0][0] = r.x * r.x * V(f) + Math.cos(f);
+        res[0][1] = r.x * r.y * V(f) - r.z * Math.sin(f);
+        res[0][2] = r.x * r.z * V(f) + r.y * Math.sin(f);
+
+        res[1][0] = r.x * r.y * V(f) + r.z * Math.sin(f);
+        res[1][1] = r.y * r.y * V(f) + Math.cos(f);
+        res[1][2] = r.y * r.z * V(f) - r.x * Math.sin(f);
+
+        res[2][0] = r.x * r.z * V(f) - r.y * Math.sin(f);
+        res[2][1] = r.y * r.z * V(f) + r.x * Math.sin(f);
+        res[2][2] = r.z * r.z * V(f) + Math.cos(f);
+        return res;
+    }
+
+    public static double V(double angle) {
+        return 1 - Math.cos(angle);
     }
 
 }

@@ -368,18 +368,36 @@ public class CuboidMesh extends TexturedMesh {
         }
         setMesh(createMesh());
     }
-    
+
     public void translateYCoor(double value) {
         for (Point3D p : listVertices) {
             p.y += value;
         }
-        setMesh(createMesh());
     }
-    
+
     public void translateZCoor(double value) {
         for (Point3D p : listVertices) {
             p.z += value;
         }
+    }
+
+    public void rotateAroundAxis(Point3D axis, double angle) {
+        double[][] matr = MatrixOperations.createRotateMatrixAroundAxis(axis, angle);
+        for (Point3D p : listVertices) {
+            double dz = p.y;
+//            p.y -= dz;
+            double[][] pointMatrix = new double[][]{{p.x, p.y, p.z}};
+            pointMatrix = MatrixOperations.transpose(pointMatrix);
+            pointMatrix = MatrixOperations.multiply(matr,pointMatrix);
+            p.x = (float) pointMatrix[0][0];
+            p.y = (float) pointMatrix[1][0];
+            p.z = (float) pointMatrix[2][0];
+//            p.y += dz;
+
+        }
+    }
+    
+    public void updateFigureMesh() {
         setMesh(createMesh());
     }
 }
