@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CullFace;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -280,6 +281,7 @@ public class CuboidTest extends Application {
                     flat2.rotateAroundAxis(oX, 0.03);
                     flat3.rotateAroundAxis(oX, 0.03);
                     flat4.rotateAroundAxis(oX, 0.03);
+                    MatrixOperations.rotPoint(floatNormalVector, 0.03);
                     flat.updateFigureMesh();
                     flat2.updateFigureMesh();
                     flat3.updateFigureMesh();
@@ -306,6 +308,10 @@ public class CuboidTest extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        Point3D q = new Point3D(20,20, -20);
+        Point3D U = new Point3D(0,0,1);
+        Point3D res  = CuboidMesh.intersectFlatAndLine(q, U, new Point3D(0,0,0), new Point3D(0,1,0));
+        System.out.println(res==null?"null" : res.toString());
+//        launch(args);
     }
 }

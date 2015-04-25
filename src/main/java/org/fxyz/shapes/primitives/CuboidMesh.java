@@ -5,6 +5,7 @@
  */
 package org.fxyz.shapes.primitives;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -388,7 +389,7 @@ public class CuboidMesh extends TexturedMesh {
 //            p.y -= dz;
             double[][] pointMatrix = new double[][]{{p.x, p.y, p.z}};
             pointMatrix = MatrixOperations.transpose(pointMatrix);
-            pointMatrix = MatrixOperations.multiply(matr,pointMatrix);
+            pointMatrix = MatrixOperations.multiply(matr, pointMatrix);
             p.x = (float) pointMatrix[0][0];
             p.y = (float) pointMatrix[1][0];
             p.z = (float) pointMatrix[2][0];
@@ -396,8 +397,18 @@ public class CuboidMesh extends TexturedMesh {
 
         }
     }
-    
+
     public void updateFigureMesh() {
         setMesh(createMesh());
+    }
+
+    public static Point3D intersectFlatAndLine(Point3D q, Point3D U, Point3D o, Point3D N) {
+        Point3D c = q.add(U.multiply(o.substract(q).dotProduct(N) / U.dotProduct(N)));
+        if (c == null) {
+            System.out.println("C = null");
+            return null;
+        }
+        System.out.println( c);
+        return c;
     }
 }
