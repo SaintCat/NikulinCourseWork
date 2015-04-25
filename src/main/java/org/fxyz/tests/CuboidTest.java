@@ -9,6 +9,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
@@ -48,6 +49,11 @@ public class CuboidTest extends Application {
     private CuboidMesh cuboid;
     private CuboidMesh cuboid2;
     private CuboidMesh cuboid3;
+    private CuboidMesh flat;
+    private CuboidMesh flat2;
+    private CuboidMesh flat3;
+    private CuboidMesh flat4;
+    private Point3D floatNormalVector = new Point3D(0, 0, 1);
     private Rotate rotateY;
     private long lastEffect;
 
@@ -65,7 +71,7 @@ public class CuboidTest extends Application {
         cameraTransform.getChildren().add(camera);
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
-        camera.setTranslateZ(-30);
+        camera.setTranslateZ(-50);
         cameraTransform.ry.setAngle(-45.0);
         cameraTransform.rx.setAngle(-10.0);
         //add a Point Light for better viewing of the grid coordinate system
@@ -147,6 +153,31 @@ public class CuboidTest extends Application {
         group.getChildren().add(cuboid3);
         sceneRoot.getChildren().addAll(group);
 
+        flat = new CuboidMesh(0.2, 0.2, 40);
+        flat.setTextureModeNone(Color.RED);
+        flat.setTranslateX(20);
+//        flat.translateXCoor(20);
+        group.getChildren().add(flat);
+        flat2 = new CuboidMesh(0.2, 0.2, 40);
+        flat2.setTextureModeNone(Color.RED);
+        flat2.setTranslateX(-20);
+//        flat2.translateXCoor(-20);
+        group.getChildren().add(flat2);
+        flat3 = new CuboidMesh(40, 0.2, 0.2);
+        flat3.setTextureModeNone(Color.RED);
+        flat3.setTranslateZ(0);
+        flat3.translateZCoor(20);
+        group.getChildren().add(flat3);
+        flat4 = new CuboidMesh(40, 0.2, 0.2);
+        flat4.setTextureModeNone(Color.RED);
+        flat4.setTranslateZ(0);
+        flat4.translateZCoor(-20);
+        group.getChildren().add(flat4);
+//
+//        flat.updateFigureMesh();
+//        flat2.updateFigureMesh();
+//        flat3.updateFigureMesh();
+//        flat4.updateFigureMesh();
         //First person shooter keyboard movement 
         scene.setOnKeyPressed(event -> {
             double change = 10.0;
@@ -218,19 +249,6 @@ public class CuboidTest extends Application {
             @Override
             public void handle(long now) {
                 if (now > lastEffect + 1_00l) {
-                    //                    dens = p->(float)(p.x*Math.cos(count.get()%100d*2d*Math.PI/50d)+p.y*Math.sin(count.get()%100d*2d*Math.PI/50d));
-//                    torus.setDensity(dens);
-
-//                    if(count.get()%100<50){
-//                        torus.setDrawMode(DrawMode.FILL);
-//                    } else {
-//                        torus.setDrawMode(DrawMode.FILL);
-//                    }
-//                    torus.setColors((int)Math.pow(2,count.get()%16));
-//                    torus.setMajorRadius(500+100*(count.get()%10));
-//                    torus.setMinorRadius(150+10*(count.get()%10));
-//                    torus.setMinorRadius(torus.getMinorRadius() + 1);
-//                    torus.setPatternScale();
                     cuboid.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
                     cuboid2.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
                     cuboid3.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
@@ -256,6 +274,20 @@ public class CuboidTest extends Application {
                     cuboid2.updateFigureMesh();
                     cuboid3.updateFigureMesh();
 
+                    //rotate plat 
+                    Point3D oX = new Point3D(1, 0, 0);
+                    flat.rotateAroundAxis(oX, 0.03);
+                    flat2.rotateAroundAxis(oX, 0.03);
+                    flat3.rotateAroundAxis(oX, 0.03);
+                    flat4.rotateAroundAxis(oX, 0.03);
+                    flat.updateFigureMesh();
+                    flat2.updateFigureMesh();
+                    flat3.updateFigureMesh();
+                    flat4.updateFigureMesh();
+//                    flat.getTransforms().add(new Rotate(0.3, Rotate.X_AXIS));
+//                    flat2.getTransforms().add(new Rotate(0.3, Rotate.X_AXIS));
+//                    flat3.getTransforms().add(new Rotate(0.3, Rotate.Z_AXIS));
+//                    flat4.getTransforms().add(new Rotate(0.3, Rotate.Z_AXIS));
                     lastEffect = now;
                 }
             }
