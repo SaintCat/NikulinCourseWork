@@ -14,6 +14,9 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -98,6 +101,10 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        handleButtons(firstLeft, firstRight);
+         handleButtons(seconLeft, secondRight);
+          handleButtons(thirdLeft, thirdRight);
+           handleButtons(flatLeft, flatRight);
         Group sceneRoot = new Group();
         scene.setRoot(sceneRoot);
         camera = new PerspectiveCamera(true);
@@ -390,7 +397,7 @@ public class Controller implements Initializable {
                     lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);
 
-                    pointsToView = PointsWrapper.tranformPointsToSpheres(res, .5);
+                    pointsToView = PointsWrapper.tranformPointsToSpheres(res, .3);
                     for (Sphere s : pointsToView) {
                         s.setMaterial(new PhongMaterial(Color.RED));
                     }
@@ -516,6 +523,27 @@ public class Controller implements Initializable {
         float v3 = (a2.x - a1.x) * (b1.y - a1.y) - (a2.y - a1.y) * (b1.x - a1.x);
         float v4 = (a2.x - a1.x) * (b2.y - a1.y) - (a2.y - a1.y) * (b2.x - a1.x);
         return (v1 * v2 < 0) && (v3 * v4 < 0);
+    }
+
+    private void handleButtons(ToggleButton firstLeft, ToggleButton firstRight) {
+        firstLeft.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if (firstRight.isSelected()) {
+                    firstRight.setSelected(false);
+                }
+            }
+        });
+         firstRight.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if (firstLeft.isSelected()) {
+                    firstLeft.setSelected(false);
+                }
+            }
+        });
     }
 
 }
