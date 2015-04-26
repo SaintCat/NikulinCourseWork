@@ -25,13 +25,13 @@ import org.fxyz.geometry.Point3D;
 public class PolyLine3D extends Group {
     
     public List<Point3D> points;
-    public int width = 2;
+    public float width = 2;
     public Color color = Color.WHITE;
     private TriangleMesh mesh;
     public MeshView meshView;
     public PhongMaterial material;
     
-    public PolyLine3D(List<Point3D> points, int width, Color color) {
+    public PolyLine3D(List<Point3D> points, float width, Color color) {
         this.points = points;
         this.width = width;
         this.color = color;

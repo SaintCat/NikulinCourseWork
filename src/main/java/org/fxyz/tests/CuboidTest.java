@@ -9,7 +9,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
@@ -20,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CullFace;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -54,11 +53,12 @@ public class CuboidTest extends Application {
     private CuboidMesh flat2;
     private CuboidMesh flat3;
     private CuboidMesh flat4;
-    private Point3D floatNormalVector = new Point3D(0, 0, 1);
+    private Point3D floatNormalVector = new Point3D(0, 1,0);
     private Rotate rotateY;
     private long lastEffect;
 
     private DensityFunction<Point3D> dens = p -> (double) p.x;
+    private Group group;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -84,7 +84,7 @@ public class CuboidTest extends Application {
         scene.setCamera(camera);
 
         rotateY = new Rotate(0, Rotate.Y_AXIS);
-        Group group = new Group();
+        group = new Group();
         group.getChildren().add(cameraTransform);
         cuboid = new CuboidMesh(5f, 10f, 5f, 1);
         cuboid.setDrawMode(DrawMode.FILL);
@@ -243,6 +243,7 @@ public class CuboidTest extends Application {
         cuboid.updateFigureMesh();
         cuboid2.updateFigureMesh();
         cuboid3.updateFigureMesh();
+        createVisiblePointsForFirstCube();
         lastEffect = System.nanoTime();
         AtomicInteger count = new AtomicInteger();
         AnimationTimer timerEffect = new AnimationTimer() {
@@ -250,46 +251,48 @@ public class CuboidTest extends Application {
             @Override
             public void handle(long now) {
                 if (now > lastEffect + 1_00l) {
-                    cuboid.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
-                    cuboid2.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
-                    cuboid3.getTransforms().add(new Rotate(0.3, 0, 0, 0, Rotate.Y_AXIS));
-                    firstAngle += 0.3;
+                    cuboid.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
+                    cuboid2.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
+                    cuboid3.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
+                    firstCube.rotateAroundOZ(0.5);
 
                     Point3D p = new Point3D(1, 0, 0);
-//                    .rotPoint(p, firstAngle);
                     p = p.normalize();
                     cuboid2.translateYCoor(2.5);
-                    cuboid2.rotateAroundAxis(p, 0.03);
+                    cuboid2.rotateAroundAxis(p, Math.toRadians(0.5));
                     cuboid2.translateYCoor(-2.5);
                     cuboid3.translateYCoor(2.5);
-                    cuboid3.rotateAroundAxis(p, 0.03);
+                    cuboid3.rotateAroundAxis(p, Math.toRadians(0.5));
                     cuboid3.translateYCoor(-2.5);
                     count.getAndIncrement();
 
                     cuboid3.translateYCoor(2.5);
                     Point3D z = new Point3D(1, 0, 0);
                     z = z.normalize();
-                    cuboid3.rotateAroundAxis(z, 0.03);
+                    cuboid3.rotateAroundAxis(z, Math.toRadians(0.5));
                     cuboid3.translateYCoor(-2.5);
 
+                    cuboid.updateFigureMesh();
                     cuboid2.updateFigureMesh();
                     cuboid3.updateFigureMesh();
 
                     //rotate plat 
                     Point3D oX = new Point3D(1, 0, 0);
-                    flat.rotateAroundAxis(oX, 0.03);
-                    flat2.rotateAroundAxis(oX, 0.03);
-                    flat3.rotateAroundAxis(oX, 0.03);
-                    flat4.rotateAroundAxis(oX, 0.03);
-                    MatrixOperations.rotPoint(floatNormalVector, 0.03);
+                    flat.rotateAroundAxis(oX, Math.toRadians(0.5));
+                    flat2.rotateAroundAxis(oX, Math.toRadians(0.5));
+                    flat3.rotateAroundAxis(oX, Math.toRadians(0.5));
+                    flat4.rotateAroundAxis(oX, Math.toRadians(0.5));
+                    CuboidMesh.rorateAroundAxis(floatNormalVector, oX, Math.toRadians(0.5));
+                    
+                    
                     flat.updateFigureMesh();
                     flat2.updateFigureMesh();
                     flat3.updateFigureMesh();
                     flat4.updateFigureMesh();
-//                    flat.getTransforms().add(new Rotate(0.3, Rotate.X_AXIS));
-//                    flat2.getTransforms().add(new Rotate(0.3, Rotate.X_AXIS));
-//                    flat3.getTransforms().add(new Rotate(0.3, Rotate.Z_AXIS));
-//                    flat4.getTransforms().add(new Rotate(0.3, Rotate.Z_AXIS));
+                    List<Point3D> ff = firstCube.getIntersectPointsWithFlat(new Point3D(0,0,0), floatNormalVector);
+                    group.getChildren().removeAll(pointsToView);
+                    pointsToView = PointsWrapper.tranformPointsToSpheres(ff, .3);
+                    group.getChildren().addAll(pointsToView);
                     lastEffect = now;
                 }
             }
@@ -302,16 +305,51 @@ public class CuboidTest extends Application {
 //        writer.setMaterialColor(Color.AQUA);
 //        writer.setTextureImage(getClass().getResource("res/netCuboid.png").toExternalForm());
     }
-    private double firstAngle = 0;
+    private List<Sphere> pointsToView = new ArrayList<>();
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Point3D q = new Point3D(20,20, -20);
-        Point3D U = new Point3D(0,0,1);
-        Point3D res  = CuboidMesh.intersectFlatAndLine(q, U, new Point3D(0,0,0), new Point3D(0,1,0));
-        System.out.println(res==null?"null" : res.toString());
-//        launch(args);
+        Point3D q = new Point3D(20, 20, -20);
+        Point3D U = new Point3D(0, 0, 1);
+        Point3D res = CuboidMesh.intersectFlatAndLine(q, U, new Point3D(0, 0, 0), new Point3D(0, 1, 0));
+        System.out.println(res == null ? "null" : res.toString());
+        launch(args);
+    }
+
+    private PointsWrapper firstCube;
+    private PointsWrapper secundCube;
+    private PointsWrapper thirdCube;
+
+    private void createVisiblePointsForFirstCube() {
+        List<Point3D> points = new ArrayList<>();
+        Point3D tmp;
+        tmp = new Point3D(2.5f, 5, 2.5f);
+        points.add(tmp);
+        tmp = new Point3D(2.5f, 5, -2.5f);
+        points.add(tmp);
+        tmp = new Point3D(-2.5f, 5, -2.5f);
+        points.add(tmp);
+        tmp = new Point3D(-2.5f, 5, 2.5f);
+        points.add(tmp);
+        tmp = new Point3D(2.5f, -5, 2.5f);
+        points.add(tmp);
+        tmp = new Point3D(2.5f, -5, -2.5f);
+        points.add(tmp);
+        tmp = new Point3D(-2.5f, -5, -2.5f);
+        points.add(tmp);
+        tmp = new Point3D(-2.5f, -5, 2.5f);
+        points.add(tmp);
+        firstCube = new PointsWrapper(points);
+        group.getChildren().addAll(firstCube.getVisiblePoints());
+    }
+
+    private void createPointsForFirstCube() {
+
+    }
+
+    private void rotatePointsForFirstCube() {
+
     }
 }
