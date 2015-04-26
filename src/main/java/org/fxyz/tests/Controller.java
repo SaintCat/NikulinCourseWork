@@ -102,9 +102,9 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         handleButtons(firstLeft, firstRight);
-         handleButtons(seconLeft, secondRight);
-          handleButtons(thirdLeft, thirdRight);
-           handleButtons(flatLeft, flatRight);
+        handleButtons(seconLeft, secondRight);
+        handleButtons(thirdLeft, thirdRight);
+        handleButtons(flatLeft, flatRight);
         Group sceneRoot = new Group();
         scene.setRoot(sceneRoot);
         camera = new PerspectiveCamera(true);
@@ -131,16 +131,16 @@ public class Controller implements Initializable {
         cuboid = new CuboidMesh(5f, 10f, 5f, 1);
         cuboid.setDrawMode(DrawMode.FILL);
         cuboid.setCullFace(CullFace.BACK);
-        // NONE
+        // BACK
         cuboid.setTextureModeNone(Color.ROYALBLUE);
 //        cuboid.translateXCoor(7);
 //        cuboid.translateYCoor(-3);
         // IMAGE
 //        cuboid.setTextureModeImage(getClass().getResource("res/netCuboid.png").toExternalForm());
         // DENSITY
-//        cuboid.setTextureModeVertices3D(256*256,p->(double)p.x*p.y*p.z);
+        cuboid.setTextureModeVertices3D(256*256,p->(double)p.x*p.y*p.z);
         // FACES
-        cuboid.setTextureModeFaces(1530);
+//        cuboid.setTextureModeFaces(1530);
 
         cuboid.getTransforms().addAll(rotateY);
         rotateY = new Rotate(0, Rotate.X_AXIS);
@@ -158,14 +158,14 @@ public class Controller implements Initializable {
         cuboid2.translateXCoor(7.5);
         cuboid2.setDrawMode(DrawMode.FILL);
         cuboid2.setCullFace(CullFace.BACK);
-        // NONE
-        cuboid2.setTextureModeNone(Color.ROYALBLUE);
+        // BACK
+        cuboid2.setTextureModeNone(Color.YELLOW);
         // IMAGE
 //        cuboid.setTextureModeImage(getClass().getResource("res/netCuboid.png").toExternalForm());
         // DENSITY
 //        cuboid.setTextureModeVertices3D(256*256,p->(double)p.x*p.y*p.z);
         // FACES
-        cuboid2.setTextureModeFaces(1530);
+//        cuboid2.setTextureModeFaces(1530);
         group.getChildren().addAll(cuboid2);
         List<Point3D> list = new ArrayList<>();
         list.add(new Point3D(0, 0, 0));
@@ -188,9 +188,9 @@ public class Controller implements Initializable {
         cuboid3.translateZCoor(2.5);
         cuboid3.setDrawMode(DrawMode.FILL);
         cuboid3.setCullFace(CullFace.BACK);
-        // NONE
+        // BACK
         cuboid3.setTextureModeNone(Color.ROYALBLUE);
-        cuboid3.setTextureModeFaces(1530);
+//        cuboid3.setTextureModeFaces(1530);
         group.getChildren().add(cuboid3);
         sceneRoot.getChildren().addAll(group);
 
@@ -535,7 +535,7 @@ public class Controller implements Initializable {
                 }
             }
         });
-         firstRight.setOnAction(new EventHandler<ActionEvent>() {
+        firstRight.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {

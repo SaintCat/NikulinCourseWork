@@ -16,7 +16,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
         
-        Scene scene = new Scene(root, 1100, 700, true, SceneAntialiasing.BALANCED);
+        Scene scene = new Scene(root, 1100, 700, false, SceneAntialiasing.BALANCED);
         scene.setFill(Color.WHITE);
 //        scene.getStylesheets().add("/styles/Styles.css");
         

@@ -56,7 +56,7 @@ public class CuboidMesh extends TexturedMesh {
         updateMesh();
         setCullFace(CullFace.BACK);
         setDrawMode(DrawMode.FILL);
-        setDepthTest(DepthTest.ENABLE);
+        setDepthTest(DepthTest.INHERIT);
     }
 
     private final DoubleProperty width = new SimpleDoubleProperty(DEFAULT_WIDTH) {
