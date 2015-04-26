@@ -19,7 +19,7 @@ import org.fxyz.shapes.primitives.CuboidMesh;
  */
 public class PointsWrapper {
 
-    private static final double SPHERE_DEFAULT_RADIUS = 0.5;
+    private static final double SPHERE_DEFAULT_RADIUS = 0.4;
     private List<Point3D> points;
     private List<Sphere> visiblePoints;
     private List<MyLine> cubeLines;
@@ -132,7 +132,7 @@ public class PointsWrapper {
     public static List<Sphere> tranformPointsToSpheres(List<Point3D> pointsToTranfor, double radius) {
         List<Sphere> res = new ArrayList<>();
         for (Point3D p : pointsToTranfor) {
-            Sphere s = new Sphere(SPHERE_DEFAULT_RADIUS);
+            Sphere s = new Sphere(radius);
             s.setTranslateX(p.x);
             s.setTranslateY(p.y);
             s.setTranslateZ(p.z);

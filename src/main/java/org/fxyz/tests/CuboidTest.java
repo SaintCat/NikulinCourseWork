@@ -246,7 +246,7 @@ public class CuboidTest extends Application {
         cuboid3.updateFigureMesh();
         createVisiblePointsForFirstCube();
         createVisiblePointsForSecondCube();
-//        createVisiblePointsForThirdCube();
+        createVisiblePointsForThirdCube();
         lastEffect = System.nanoTime();
         AtomicInteger count = new AtomicInteger();
         AnimationTimer timerEffect = new AnimationTimer() {
@@ -264,36 +264,39 @@ public class CuboidTest extends Application {
                     rotateAngle += 0.5f;
                     firstCube.rotateAroundOZ(0.5);
                     secondCube.rotateAroundOZ(0.5);
-//                    thirdCube.rotateAroundOZ(0.5);
+                    thirdCube.rotateAroundOZ(0.5);
                     Point3D p = new Point3D(1, 0, 0);
-                    p = p.normalize();
-                    cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), -rotateAngle);
+                    MatrixOperations.rotPoint(p, Math.toRadians(rotateAngle));
                     cuboid2.translateYCoor(2.5);
-//                    secondCube.translateYCoor(2.5);
+                    secondCube.translateYCoor(2.5);
                     cuboid2.rotateAroundAxis(p, Math.toRadians(0.5));
                     secondCube.rotateAroundAxis(p, Math.toRadians(0.5));
                     cuboid2.translateYCoor(-2.5);
-                    cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), rotateAngle);
-//                    secondCube.translateYCoor(-2.5);
+                    secondCube.translateYCoor(-2.5);
 
                     cuboid3.translateYCoor(2.5);
+                    thirdCube.translateYCoor(2.5);
                     cuboid3.rotateAroundAxis(p, Math.toRadians(0.5));
-//                    thirdCube.rotateAroundAxis(p, Math.toRadians(0.5));
+                    thirdCube.rotateAroundAxis(p, Math.toRadians(0.5));
                     cuboid3.translateYCoor(-2.5);
+                    thirdCube.translateYCoor(-2.5);
                     count.getAndIncrement();
 
                     cuboid3.translateYCoor(2.5);
+                    thirdCube.translateYCoor(2.5);
                     Point3D z = new Point3D(1, 0, 0);
-                    z = z.normalize();
+                    MatrixOperations.rotPoint(z, Math.toRadians(rotateAngle));
                     cuboid3.rotateAroundAxis(z, Math.toRadians(0.5));
+                    thirdCube.rotateAroundAxis(z, Math.toRadians(0.5));
                     cuboid3.translateYCoor(-2.5);
+                    thirdCube.translateYCoor(-2.5);
 
                     cuboid.updateFigureMesh();
                     cuboid2.updateFigureMesh();
                     cuboid3.updateFigureMesh();
                     firstCube.updateSphereCoors();
                     secondCube.updateSphereCoors();
-//                    thirdCube.updateSphereCoors();
+                    thirdCube.updateSphereCoors();
 
                     //rotate plat 
                     Point3D oX = new Point3D(1, 0, 0);
@@ -307,9 +310,12 @@ public class CuboidTest extends Application {
                     flat2.updateFigureMesh();
                     flat3.updateFigureMesh();
                     flat4.updateFigureMesh();
-                    List<Point3D> ff = firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector);
+                    List<Point3D> res = new ArrayList<>();
+                    res.addAll(firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    res.addAll(secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    res.addAll(thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
                     group.getChildren().removeAll(pointsToView);
-                    pointsToView = PointsWrapper.tranformPointsToSpheres(ff, .1);
+                    pointsToView = PointsWrapper.tranformPointsToSpheres(res, .5);
                     for (Sphere s : pointsToView) {
                         s.setMaterial(new PhongMaterial(Color.ORANGE));
                     }

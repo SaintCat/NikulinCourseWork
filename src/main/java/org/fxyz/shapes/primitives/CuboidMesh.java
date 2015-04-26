@@ -418,7 +418,6 @@ public class CuboidMesh extends TexturedMesh {
             System.out.println("C = null");
             return null;
         }
-        System.out.println(c);
         if (c.x == Float.NaN) {
             return null;
         }
