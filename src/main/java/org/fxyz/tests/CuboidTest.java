@@ -88,7 +88,7 @@ public class CuboidTest extends Application {
         group = new Group();
         group.getChildren().add(cameraTransform);
         cuboid = new CuboidMesh(5f, 10f, 5f, 1);
-        cuboid.setDrawMode(DrawMode.FILL);
+        cuboid.setDrawMode(DrawMode.LINE);
         cuboid.setCullFace(CullFace.BACK);
         // NONE
         cuboid.setTextureModeNone(Color.ROYALBLUE);
@@ -115,7 +115,7 @@ public class CuboidTest extends Application {
         cuboid2 = new CuboidMesh(10f, 5f, 5f, 1);
         cuboid2.translateYCoor(-2.5);
         cuboid2.translateXCoor(7.5);
-        cuboid2.setDrawMode(DrawMode.FILL);
+        cuboid2.setDrawMode(DrawMode.LINE);
         cuboid2.setCullFace(CullFace.BACK);
         // NONE
         cuboid2.setTextureModeNone(Color.ROYALBLUE);
@@ -147,7 +147,7 @@ public class CuboidTest extends Application {
         cuboid3.translateYCoor(-2.5);
         cuboid3.translateXCoor(15);
         cuboid3.translateZCoor(2.5);
-        cuboid3.setDrawMode(DrawMode.FILL);
+        cuboid3.setDrawMode(DrawMode.LINE);
         cuboid3.setCullFace(CullFace.BACK);
         // NONE
         cuboid3.setTextureModeNone(Color.ROYALBLUE);
@@ -254,30 +254,30 @@ public class CuboidTest extends Application {
             @Override
             public void handle(long now) {
                 if (now > lastEffect + 1_00l) {
-//                    cuboid.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
-//                    cuboid2.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
-//                    cuboid3.getTransforms().add(new Rotate(0.5, 0, 0, 0, Rotate.Y_AXIS));
+//                    cuboid.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
+//                    cuboid2.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
+//                    cuboid3.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
 
-                    cuboid.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.5));
-                    cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.5));
-                    cuboid3.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.5));
-                    rotateAngle += 0.5f;
-                    firstCube.rotateAroundOZ(0.5);
-                    secondCube.rotateAroundOZ(0.5);
-                    thirdCube.rotateAroundOZ(0.5);
+                    cuboid.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
+                    cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
+                    cuboid3.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
+                    rotateAngle += 0.2f;
+                    firstCube.rotateAroundOZ(0.2);
+                    secondCube.rotateAroundOZ(0.2);
+                    thirdCube.rotateAroundOZ(0.2);
                     Point3D p = new Point3D(1, 0, 0);
                     MatrixOperations.rotPoint(p, Math.toRadians(rotateAngle));
                     cuboid2.translateYCoor(2.5);
                     secondCube.translateYCoor(2.5);
-                    cuboid2.rotateAroundAxis(p, Math.toRadians(0.5));
-                    secondCube.rotateAroundAxis(p, Math.toRadians(0.5));
+                    cuboid2.rotateAroundAxis(p, Math.toRadians(0.2));
+                    secondCube.rotateAroundAxis(p, Math.toRadians(0.2));
                     cuboid2.translateYCoor(-2.5);
                     secondCube.translateYCoor(-2.5);
 
                     cuboid3.translateYCoor(2.5);
                     thirdCube.translateYCoor(2.5);
-                    cuboid3.rotateAroundAxis(p, Math.toRadians(0.5));
-                    thirdCube.rotateAroundAxis(p, Math.toRadians(0.5));
+                    cuboid3.rotateAroundAxis(p, Math.toRadians(0.2));
+                    thirdCube.rotateAroundAxis(p, Math.toRadians(0.2));
                     cuboid3.translateYCoor(-2.5);
                     thirdCube.translateYCoor(-2.5);
                     count.getAndIncrement();
@@ -286,8 +286,8 @@ public class CuboidTest extends Application {
                     thirdCube.translateYCoor(2.5);
                     Point3D z = new Point3D(1, 0, 0);
                     MatrixOperations.rotPoint(z, Math.toRadians(rotateAngle));
-                    cuboid3.rotateAroundAxis(z, Math.toRadians(0.5));
-                    thirdCube.rotateAroundAxis(z, Math.toRadians(0.5));
+                    cuboid3.rotateAroundAxis(z, Math.toRadians(0.2));
+                    thirdCube.rotateAroundAxis(z, Math.toRadians(0.2));
                     cuboid3.translateYCoor(-2.5);
                     thirdCube.translateYCoor(-2.5);
 
@@ -300,26 +300,46 @@ public class CuboidTest extends Application {
 
                     //rotate plat 
                     Point3D oX = new Point3D(1, 0, 0);
-                    flat.rotateAroundAxis(oX, Math.toRadians(0.5));
-                    flat2.rotateAroundAxis(oX, Math.toRadians(0.5));
-                    flat3.rotateAroundAxis(oX, Math.toRadians(0.5));
-                    flat4.rotateAroundAxis(oX, Math.toRadians(0.5));
-                    CuboidMesh.rorateAroundAxis(floatNormalVector, oX, Math.toRadians(0.5));
+                    flat.rotateAroundAxis(oX, Math.toRadians(0.2));
+                    flat2.rotateAroundAxis(oX, Math.toRadians(0.2));
+                    flat3.rotateAroundAxis(oX, Math.toRadians(0.2));
+                    flat4.rotateAroundAxis(oX, Math.toRadians(0.2));
+                    CuboidMesh.rorateAroundAxis(floatNormalVector, oX, Math.toRadians(0.2));
 
                     flat.updateFigureMesh();
                     flat2.updateFigureMesh();
                     flat3.updateFigureMesh();
                     flat4.updateFigureMesh();
+                    group.getChildren().removeAll(lines);
+                    lines.clear();
                     List<Point3D> res = new ArrayList<>();
-                    res.addAll(firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    res.addAll(secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    res.addAll(thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    List<Point3D> tmp;
+                    res.addAll(tmp = firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    if (tmp.size() > 2) {
+                        tmp.add(tmp.get(0));
+                    }
+                    PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
+                    lines.add(lineFirst);
+                    res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    if (tmp.size() > 2) {
+                        tmp.add(tmp.get(0));
+                    }
+                    PolyLine3D lineSecond = new PolyLine3D(tmp, 0.1f, Color.RED);
+                    lines.add(lineSecond);
+                    res.addAll(tmp = thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
+                    if (tmp.size() > 2) {
+                        tmp.add(tmp.get(0));
+                    }
+                    PolyLine3D lineThird = new PolyLine3D(tmp, 0.1f, Color.RED);
+                    lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);
+
                     pointsToView = PointsWrapper.tranformPointsToSpheres(res, .5);
                     for (Sphere s : pointsToView) {
-                        s.setMaterial(new PhongMaterial(Color.ORANGE));
+                        s.setMaterial(new PhongMaterial(Color.RED));
                     }
                     group.getChildren().addAll(pointsToView);
+                    group.getChildren().addAll(lines);
                     lastEffect = now;
                 }
             }
@@ -333,6 +353,7 @@ public class CuboidTest extends Application {
 //        writer.setTextureImage(getClass().getResource("res/netCuboid.png").toExternalForm());
     }
     private List<Sphere> pointsToView = new ArrayList<>();
+    private List<PolyLine3D> lines = new ArrayList<>();
     private Float rotateAngle = 0f;
 
     /**
