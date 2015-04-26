@@ -409,7 +409,11 @@ public class CuboidMesh extends TexturedMesh {
     }
 
     public static Point3D intersectFlatAndLine(Point3D q, Point3D U, Point3D o, Point3D N) {
-        Point3D c = q.add(U.multiply(o.substract(q).dotProduct(N) / U.dotProduct(N)));
+        float tetta = o.substract(q).dotProduct(N) / U.dotProduct(N);
+        if((tetta >= 0 && tetta <= 1)) {
+            return null;
+        }
+        Point3D c = q.add(U.multiply(tetta));
         if (c == null) {
             System.out.println("C = null");
             return null;
@@ -419,5 +423,9 @@ public class CuboidMesh extends TexturedMesh {
             return null;
         }
         return c;
+    }
+    
+    public void printPoints() {
+        System.out.println(listVertices);
     }
 }

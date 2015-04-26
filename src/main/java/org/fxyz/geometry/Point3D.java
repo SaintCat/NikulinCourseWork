@@ -85,6 +85,10 @@ public class Point3D {
     public float dotProduct(Point3D point) {
         return dotProduct(point.x, point.y, point.z);
     }
+    
+    public float dotProductNew(Point3D point) {
+        return dotProduct(point.x, point.y, point.z);
+    }
 
     public float dotProduct(float x, float y, float z) {
         return this.x * x + this.y * y + this.z * z;

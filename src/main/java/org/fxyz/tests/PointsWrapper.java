@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import org.fxyz.geometry.Point3D;
-import org.fxyz.shapes.composites.PolyLine3D;
 import org.fxyz.shapes.primitives.CuboidMesh;
 
 /**
@@ -31,18 +30,6 @@ public class PointsWrapper {
         cubeLines = getCubeLines();
     }
 
-    private List<Sphere> createVisiblePoints() {
-        List<Sphere> res = new ArrayList<>();
-        for (Point3D p : points) {
-            Sphere s = new Sphere(SPHERE_DEFAULT_RADIUS);
-            s.setTranslateX(p.x);
-            s.setTranslateY(p.y);
-            s.setTranslateZ(p.z);
-            s.setMaterial(new PhongMaterial(Color.ROYALBLUE));
-            res.add(s);
-        }
-        return res;
-    }
 
     public void rotateAroundOZ(double angleInDegress) {
         for (int i = 0; i < points.size(); i++) {
@@ -92,23 +79,60 @@ public class PointsWrapper {
     public List<Point3D> getIntersectPointsWithFlat(Point3D p, Point3D normal) {
         List<Point3D> res = new ArrayList<>();
         for (MyLine line : cubeLines) {
-            Point3D resPoint = CuboidMesh.intersectFlatAndLine(line.first, line.first.substract(line.second).normalize(), p, normal);
+            Point3D resPoint = CuboidMesh.intersectFlatAndLine(line.first, line.second.substract(line.first).normalize(), p, normal);
             if (resPoint != null) {
-//                if ((resPoint.x < line.second.x && resPoint.x > line.first.x)
-//                        && (resPoint.y < line.second.y && resPoint.y > line.first.y)
-//                        && (resPoint.z < line.second.z && resPoint.z > line.first.z)
-//                        ){
+                if (((resPoint.x <= line.second.x && resPoint.x >= line.first.x)
+                        || (resPoint.x >= line.second.x && resPoint.x <= line.first.x))
+                        && ((resPoint.y <= line.second.y && resPoint.y >= line.first.y)
+                        || (resPoint.y >= line.second.y && resPoint.y <= line.first.y))
+                        && ((resPoint.z <= line.second.z && resPoint.z >= line.first.z)
+                        || (resPoint.z >= line.second.z && resPoint.z <= line.first.z))) {
                     res.add(resPoint);
-//                }
+                }
             }
         }
         return res;
     }
 
+    public void rotateAroundAxis(Point3D axis, double angle) {
+        double[][] matr = MatrixOperations.createRotateMatrixAroundAxis(axis, angle);
+        for (int i = 0; i < points.size(); i++) {
+            Point3D p = points.get(i);
+            double[][] pointMatrix = new double[][]{{p.x, p.y, p.z}};
+            pointMatrix = MatrixOperations.transpose(pointMatrix);
+            pointMatrix = MatrixOperations.multiply(matr, pointMatrix);
+            p.x = (float) pointMatrix[0][0];
+            p.y = (float) pointMatrix[1][0];
+            p.z = (float) pointMatrix[2][0];
+//            Sphere s = visiblePoints.get(i);
+//            s.setTranslateX(p.x);
+//            s.setTranslateY(p.y);
+//            s.setTranslateZ(p.z);
+        }
+    }
+
+    public void translateXCoor(double value) {
+        for (Point3D p : points) {
+            p.x += value;
+        }
+    }
+
+    public void translateYCoor(double value) {
+        for (Point3D p : points) {
+            p.y += value;
+        }
+    }
+
+    public void translateZCoor(double value) {
+        for (Point3D p : points) {
+            p.z += value;
+        }
+    }
+
     public static List<Sphere> tranformPointsToSpheres(List<Point3D> pointsToTranfor, double radius) {
         List<Sphere> res = new ArrayList<>();
         for (Point3D p : pointsToTranfor) {
-            Sphere s = new Sphere(radius);
+            Sphere s = new Sphere(SPHERE_DEFAULT_RADIUS);
             s.setTranslateX(p.x);
             s.setTranslateY(p.y);
             s.setTranslateZ(p.z);
@@ -120,5 +144,15 @@ public class PointsWrapper {
 
     public static List<Sphere> tranformPointsToSpheres(List<Point3D> pointsToTranfor) {
         return tranformPointsToSpheres(pointsToTranfor, SPHERE_DEFAULT_RADIUS);
+    }
+
+    public void updateSphereCoors() {
+        for (int i = 0; i < points.size(); i++) {
+            Point3D p = points.get(i);
+            Sphere s = visiblePoints.get(i);
+            s.setTranslateX(p.x);
+            s.setTranslateY(p.y);
+            s.setTranslateZ(p.z);
+        }
     }
 }

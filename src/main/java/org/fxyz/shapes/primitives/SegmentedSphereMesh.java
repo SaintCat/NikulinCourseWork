@@ -14,11 +14,11 @@ import org.fxyz.geometry.Face3;
 import org.fxyz.geometry.Point3D;
 
 /**
- * SegmentedTorusMesh is based in TorusMesh, but allows cutting the torus in two 
- * directions, in order to have a banner parallel to an uncut torus.
- * Based on a regular 2D TriangleMesh, mapped to a 3D mesh with the torus parametric equations
- * Crop allows cutting/cropping the 2D mesh on the borders
- * If crop ==0  then  a regular torus is formed (thought with slight differences from 
+ * SegmentedTorusMesh is based in TorusMesh, but allows cutting the torus in two
+ * directions, in order to have a banner parallel to an uncut torus. Based on a
+ * regular 2D TriangleMesh, mapped to a 3D mesh with the torus parametric
+ * equations Crop allows cutting/cropping the 2D mesh on the borders If crop ==0
+ * then a regular torus is formed (thought with slight differences from
  * TorusMesh)
  */
 public class SegmentedSphereMesh extends TexturedMesh {
@@ -31,7 +31,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
     private static final double DEFAULT_X_OFFSET = 0.0D;
     private static final double DEFAULT_Y_OFFSET = 0.0D;
     private static final double DEFAULT_Z_OFFSET = 1.0D;
-    
+
     public SegmentedSphereMesh() {
         this(DEFAULT_DIVISIONS, DEFAULT_CROP_X, DEFAULT_CROP_Y, DEFAULT_RADIUS);
     }
@@ -46,7 +46,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
         setRadiusCropY(cropY);
         setRadius(radius);
         setzOffset(1);
-        
+
         updateMesh();
         setCullFace(CullFace.BACK);
         setDrawMode(DrawMode.FILL);
@@ -54,25 +54,25 @@ public class SegmentedSphereMesh extends TexturedMesh {
     }
 
     @Override
-    protected final void updateMesh(){       
+    protected final void updateMesh() {
         setMesh(null);
-        mesh=createSegmentedSphere(
-            getRadiusDivisions(), 
-            getRadiusCropX(),
-            getRadiusCropY(),
-            (float) getRadius(), 
-            (float) getTubeStartAngleOffset(), 
-            (float)getxOffset(),
-            (float)getyOffset(), 
-            (float)getzOffset());
+        mesh = createSegmentedSphere(
+                getRadiusDivisions(),
+                getRadiusCropX(),
+                getRadiusCropY(),
+                (float) getRadius(),
+                (float) getTubeStartAngleOffset(),
+                (float) getxOffset(),
+                (float) getyOffset(),
+                (float) getzOffset());
         setMesh(mesh);
     }
-    
+
     private final IntegerProperty radiusDivisions = new SimpleIntegerProperty(DEFAULT_DIVISIONS) {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -95,12 +95,13 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
 
     };
+
     public final int getRadiusCropX() {
         return radiusCropX.get();
     }
@@ -117,12 +118,13 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
 
     };
+
     public final int getRadiusCropY() {
         return radiusCropY.get();
     }
@@ -139,7 +141,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -162,7 +164,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -184,7 +186,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -206,7 +208,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -228,7 +230,7 @@ public class SegmentedSphereMesh extends TexturedMesh {
 
         @Override
         protected void invalidated() {
-            if(mesh!=null){
+            if (mesh != null) {
                 updateMesh();
             }
         }
@@ -246,82 +248,103 @@ public class SegmentedSphereMesh extends TexturedMesh {
     public DoubleProperty zOffsetProperty() {
         return zOffset;
     }
-    
+
     private TriangleMesh createSegmentedSphere(int subDivY, int cropX, int cropY,
             float radius, float tubeStartAngle, float xOffset, float yOffset, float zOffset) {
- 
+
         listVertices.clear();
         listTextures.clear();
         listFaces.clear();
-        
-        int subDivX=subDivY;
-        
-        int numDivX = subDivX + 1-2*cropX;
+
+        int subDivX = subDivY;
+
+        int numDivX = subDivX + 1 - 2 * cropX;
         float pointX, pointY, pointZ;
-        
-        areaMesh.setWidth((1-2*cropX/subDivX)*2d*Math.PI*radius);
-        areaMesh.setHeight((1-2*cropY/subDivY)*2d*Math.PI*radius);
-        
+
+        areaMesh.setWidth((1 - 2 * cropX / subDivX) * 2d * Math.PI * radius);
+        areaMesh.setHeight((1 - 2 * cropY / subDivY) * 2d * Math.PI * radius);
+
         // Create points
-        for (int y = cropY; y <= subDivY-cropY; y++) {
+        for (int y = cropY; y <= subDivY - cropY; y++) {
             float dy = (float) y / subDivY;
-            for (int x = cropX; x <= subDivX-cropX; x++) {
+            for (int x = cropX; x <= subDivX - cropX; x++) {
                 float dx = (float) x / subDivX;
-                if(cropX>0 || (cropX==0 && x<subDivX)){
-                    pointX = (float) ((radius*Math.sin((-1d+dy)*Math.PI))*(Math.cos((-1d+2d*dx)*Math.PI)+ xOffset));
-                    pointZ = (float) ((radius*Math.sin((-1d+dy)*Math.PI))*(Math.sin((-1d+2d*dx)*Math.PI)+ yOffset));
-                    pointY = (float) (radius*Math.cos((-1d+dy)*Math.PI)*zOffset);
+                if (cropX > 0 || (cropX == 0 && x < subDivX)) {
+                    pointX = (float) ((radius * Math.sin((-1d + dy) * Math.PI)) * (Math.cos((-1d + 2d * dx) * Math.PI) + xOffset));
+                    pointZ = (float) ((radius * Math.sin((-1d + dy) * Math.PI)) * (Math.sin((-1d + 2d * dx) * Math.PI) + yOffset));
+                    pointY = (float) (radius * Math.cos((-1d + dy) * Math.PI) * zOffset);
                     listVertices.add(new Point3D(pointX, pointY, pointZ));
                 }
             }
         }
         // Create texture coordinates
 //        if(exterior.get()){
-            createTexCoords(subDivX-2*cropX,subDivY-2*cropY);
+        createTexCoords(subDivX - 2 * cropX, subDivY - 2 * cropY);
 //        } else {
 //            createReverseTexCoords(subDivX-2*crop,subDivY-2*crop);
 //        }
-        
+
         // Create textures indices
-        for (int y = cropY; y < subDivY-cropY; y++) {
-            for (int x = cropX; x < subDivX-cropX; x++) {
-                int p00 = (y-cropY) * numDivX + (x-cropX);
+        for (int y = cropY; y < subDivY - cropY; y++) {
+            for (int x = cropX; x < subDivX - cropX; x++) {
+                int p00 = (y - cropY) * numDivX + (x - cropX);
                 int p01 = p00 + 1;
                 int p10 = p00 + numDivX;
                 int p11 = p10 + 1;
-                if(y<subDivY-1){
-                    listTextures.add(new Face3(p00,p10,p11));   
-                }             
-                if(y>0){
-                    listTextures.add(new Face3(p11,p01,p00));
+                if (y < subDivY - 1) {
+                    listTextures.add(new Face3(p00, p10, p11));
+                }
+                if (y > 0) {
+                    listTextures.add(new Face3(p11, p01, p00));
                 }
             }
         }
         // Create faces indices
-        for (int y = cropY; y < subDivY-cropY; y++) {
-            for (int x = cropX; x < subDivX-cropX; x++) {
-                int p00 = (y-cropY) * ((cropX>0)?numDivX:numDivX-1) + (x-cropX);
+        for (int y = cropY; y < subDivY - cropY; y++) {
+            for (int x = cropX; x < subDivX - cropX; x++) {
+                int p00 = (y - cropY) * ((cropX > 0) ? numDivX : numDivX - 1) + (x - cropX);
                 int p01 = p00 + 1;
-                if(cropX==0 && x==subDivX-1){
-                    p01-=subDivX;
+                if (cropX == 0 && x == subDivX - 1) {
+                    p01 -= subDivX;
                 }
-                int p10 = p00 + ((cropX>0)?numDivX:numDivX-1);
+                int p10 = p00 + ((cropX > 0) ? numDivX : numDivX - 1);
 //                if(cropY==0 && y==subDivY-1){
 //                    p10-=subDivY*((cropX>0)?numDivX:numDivX-1);
 //                }
                 int p11 = p10 + 1;
-                if(cropX==0 && x==subDivX-1){
-                    p11-=subDivX;
-                }                
-                if(y<subDivY-1){
-                    listFaces.add(new Face3(p00,p10,p11));   
+                if (cropX == 0 && x == subDivX - 1) {
+                    p11 -= subDivX;
                 }
-                if(y>0){
-                    listFaces.add(new Face3(p11,p01,p00));
+                if (y < subDivY - 1) {
+                    listFaces.add(new Face3(p00, p10, p11));
+                }
+                if (y > 0) {
+                    listFaces.add(new Face3(p11, p01, p00));
                 }
             }
         }
         return createMesh();
+    }
+
+    public void translateXCoor(double value) {
+        for (Point3D p : listVertices) {
+            p.x += value;
+        }
+        setMesh(createMesh());
+    }
+
+    public void translateYCoor(double value) {
+        for (Point3D p : listVertices) {
+            p.y += value;
+        }
+        setMesh(createMesh());
+    }
+
+    public void translateZCoor(double value) {
+        for (Point3D p : listVertices) {
+            p.z += value;
+        }
+        setMesh(createMesh());
     }
 
 }
