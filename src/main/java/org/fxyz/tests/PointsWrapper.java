@@ -19,7 +19,7 @@ import org.fxyz.shapes.primitives.CuboidMesh;
  */
 public class PointsWrapper {
 
-    private static final double SPHERE_DEFAULT_RADIUS = 0.4;
+    private static final double SPHERE_DEFAULT_RADIUS = 0.1;
     private List<Point3D> points;
     private List<Sphere> visiblePoints;
     private List<MyLine> cubeLines;

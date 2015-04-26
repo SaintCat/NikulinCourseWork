@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.canvas.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="viewPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="424.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.saintcat.client.interpolcurves.CurveController">
-    <children>
-      <ScrollPane layoutX="192.0" layoutY="14.0" prefHeight="398.0" prefViewportHeight="563.0" prefViewportWidth="655.0" prefWidth="626.0">
-         <content>
-            <AnchorPane fx:id="paintPanel" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="621.0">
-               <cursor>
-                  <Cursor fx:constant="CROSSHAIR" />
-               </cursor>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
-      <Button layoutX="20.0" layoutY="122.0" mnemonicParsing="false" onAction="#newPolAction" prefHeight="33.0" prefWidth="158.0" text="Новая линия" />
-      <Slider fx:id="polySizeSlider" layoutX="20.0" layoutY="53.0" min="5.0" showTickMarks="true" value="10.0" />
-      <Label layoutX="76.0" layoutY="24.0" prefHeight="17.0" prefWidth="126.0" text="Отступ" />
-    </children>
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="669.0" prefWidth="1081.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fxyz.tests.Controller">
+   <children>
+      <ToggleButton fx:id="firstLeft" layoutX="967.0" layoutY="31.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&lt;&lt;" />
+      <ToggleButton fx:id="firstRight" layoutX="1012.0" layoutY="31.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&gt;&gt;" />
+      <ToggleButton fx:id="secondRight" layoutX="1012.0" layoutY="73.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&gt;&gt;" />
+      <ToggleButton fx:id="seconLeft" layoutX="967.0" layoutY="73.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&lt;&lt;" />
+      <ToggleButton fx:id="thirdRight" layoutX="1012.0" layoutY="115.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&gt;&gt;" />
+      <ToggleButton fx:id="thirdLeft" layoutX="967.0" layoutY="115.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&lt;&lt;" />
+      <ToggleButton fx:id="flatRight" layoutX="1012.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&gt;&gt;" />
+      <ToggleButton fx:id="flatLeft" layoutX="967.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="&lt;&lt;" />
+      <Label layoutX="967.0" layoutY="14.0" prefHeight="17.0" prefWidth="75.0" text="Первый куб" />
+      <Label layoutX="967.0" layoutY="56.0" prefHeight="17.0" prefWidth="75.0" text="Второй куб" />
+      <Label layoutX="967.0" layoutY="98.0" prefHeight="17.0" prefWidth="75.0" text="Третий куб" />
+      <Label layoutX="967.0" layoutY="140.0" prefHeight="17.0" prefWidth="75.0" text="Плоскость" />
+      <SubScene fx:id="scene" height="669.0" layoutX="2.0" layoutY="-1.0" width="962.0">
+        <root>
+          <Region />
+        </root>
+      </SubScene>
+   </children>
 </AnchorPane>

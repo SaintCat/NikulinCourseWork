@@ -1,28 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.fxyz.tests;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import static javafx.application.Application.launch;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
+import javafx.scene.SubScene;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.CullFace;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.fxyz.cameras.CameraTransformer;
 import org.fxyz.geometry.Point3D;
@@ -32,10 +39,38 @@ import org.fxyz.utils.DensityFunction;
 
 /**
  *
- * @author jpereda
+ * @author ROMAN
  */
-public class CuboidTest extends Application {
+public class Controller implements Initializable {
 
+    @FXML
+    private ToggleButton firstRight;
+
+    @FXML
+    private ToggleButton flatRight;
+
+    @FXML
+    private ToggleButton flatLeft;
+
+    @FXML
+    private ToggleButton thirdLeft;
+
+    @FXML
+    private ToggleButton thirdRight;
+
+    @FXML
+    private AnchorPane pane;
+
+    @FXML
+    private ToggleButton firstLeft;
+
+    @FXML
+    private ToggleButton secondRight;
+
+    @FXML
+    private ToggleButton seconLeft;
+    @FXML
+    private SubScene scene;
     private PerspectiveCamera camera;
     private final double sceneWidth = 600;
     private final double sceneHeight = 600;
@@ -62,10 +97,9 @@ public class CuboidTest extends Application {
     private Group group;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void initialize(URL location, ResourceBundle resources) {
         Group sceneRoot = new Group();
-        Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
-        scene.setFill(Color.WHITE);
+        scene.setRoot(sceneRoot);
         camera = new PerspectiveCamera(true);
 
         //setup camera transform for rotational support
@@ -88,7 +122,7 @@ public class CuboidTest extends Application {
         group = new Group();
         group.getChildren().add(cameraTransform);
         cuboid = new CuboidMesh(5f, 10f, 5f, 1);
-        cuboid.setDrawMode(DrawMode.LINE);
+        cuboid.setDrawMode(DrawMode.FILL);
         cuboid.setCullFace(CullFace.BACK);
         // NONE
         cuboid.setTextureModeNone(Color.ROYALBLUE);
@@ -115,7 +149,7 @@ public class CuboidTest extends Application {
         cuboid2 = new CuboidMesh(10f, 5f, 5f, 1);
         cuboid2.translateYCoor(-2.5);
         cuboid2.translateXCoor(7.5);
-        cuboid2.setDrawMode(DrawMode.LINE);
+        cuboid2.setDrawMode(DrawMode.FILL);
         cuboid2.setCullFace(CullFace.BACK);
         // NONE
         cuboid2.setTextureModeNone(Color.ROYALBLUE);
@@ -129,8 +163,6 @@ public class CuboidTest extends Application {
         List<Point3D> list = new ArrayList<>();
         list.add(new Point3D(0, 0, 0));
         list.add(new Point3D(100, 0, 0));
-        PolyLine3D line = new PolyLine3D(list, 1, Color.RED);
-        group.getChildren().add(line);
         Rotate rotateFirst = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
         Rotate rotateSecond = new Rotate(0, -7, 0, 0, Rotate.Y_AXIS);
         cuboid2.getTransforms().add(rotateFirst);
@@ -147,7 +179,7 @@ public class CuboidTest extends Application {
         cuboid3.translateYCoor(-2.5);
         cuboid3.translateXCoor(15);
         cuboid3.translateZCoor(2.5);
-        cuboid3.setDrawMode(DrawMode.LINE);
+        cuboid3.setDrawMode(DrawMode.FILL);
         cuboid3.setCullFace(CullFace.BACK);
         // NONE
         cuboid3.setTextureModeNone(Color.ROYALBLUE);
@@ -181,7 +213,7 @@ public class CuboidTest extends Application {
 //        flat3.updateFigureMesh();
 //        flat4.updateFigureMesh();
         //First person shooter keyboard movement 
-        scene.setOnKeyPressed(event -> {
+        pane.setOnKeyPressed(event -> {
             double change = 10.0;
             //Add shift modifier to simulate "Running Speed"
             if (event.isShiftDown()) {
@@ -247,6 +279,16 @@ public class CuboidTest extends Application {
         createVisiblePointsForFirstCube();
         createVisiblePointsForSecondCube();
         createVisiblePointsForThirdCube();
+        Point3D oX = new Point3D(1, 0, 0);
+        flat.rotateAroundAxis(oX, Math.toRadians(0));
+        flat2.rotateAroundAxis(oX, Math.toRadians(0));
+        flat3.rotateAroundAxis(oX, Math.toRadians(0));
+        flat4.rotateAroundAxis(oX, Math.toRadians(0));
+
+        flat.updateFigureMesh();
+        flat2.updateFigureMesh();
+        flat3.updateFigureMesh();
+        flat4.updateFigureMesh();
         lastEffect = System.nanoTime();
         AtomicInteger count = new AtomicInteger();
         AnimationTimer timerEffect = new AnimationTimer() {
@@ -257,40 +299,48 @@ public class CuboidTest extends Application {
 //                    cuboid.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
 //                    cuboid2.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
 //                    cuboid3.getTransforms().add(new Rotate(0.2, 0, 0, 0, Rotate.Y_AXIS));
+                    if (firstLeft.isSelected() || firstRight.isSelected()) {
+                        float angle = firstLeft.isSelected() ? -0.2f : 0.2f;
+                        cuboid.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(angle));
+                        cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(angle));
+                        cuboid3.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(angle));
+                        rotateAngle += angle;
+                        firstCube.rotateAroundOZ(angle);
+                        secondCube.rotateAroundOZ(angle);
+                        thirdCube.rotateAroundOZ(angle);
+                    }
 
-                    cuboid.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
-                    cuboid2.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
-                    cuboid3.rotateAroundAxis(new Point3D(0, 1, 0), Math.toRadians(0.2));
-                    rotateAngle += 0.2f;
-                    firstCube.rotateAroundOZ(0.2);
-                    secondCube.rotateAroundOZ(0.2);
-                    thirdCube.rotateAroundOZ(0.2);
-                    Point3D p = new Point3D(1, 0, 0);
-                    MatrixOperations.rotPoint(p, Math.toRadians(rotateAngle));
-                    cuboid2.translateYCoor(2.5);
-                    secondCube.translateYCoor(2.5);
-                    cuboid2.rotateAroundAxis(p, Math.toRadians(0.2));
-                    secondCube.rotateAroundAxis(p, Math.toRadians(0.2));
-                    cuboid2.translateYCoor(-2.5);
-                    secondCube.translateYCoor(-2.5);
+                    if (seconLeft.isSelected() || secondRight.isSelected()) {
+                        float angle = seconLeft.isSelected() ? -0.2f : 0.2f;
+                        Point3D p = new Point3D(1, 0, 0);
+                        MatrixOperations.rotPoint(p, Math.toRadians(rotateAngle));
+                        cuboid2.translateYCoor(2.5);
+                        secondCube.translateYCoor(2.5);
+                        cuboid2.rotateAroundAxis(p, Math.toRadians(angle));
+                        secondCube.rotateAroundAxis(p, Math.toRadians(angle));
+                        cuboid2.translateYCoor(-2.5);
+                        secondCube.translateYCoor(-2.5);
 
-                    cuboid3.translateYCoor(2.5);
-                    thirdCube.translateYCoor(2.5);
-                    cuboid3.rotateAroundAxis(p, Math.toRadians(0.2));
-                    thirdCube.rotateAroundAxis(p, Math.toRadians(0.2));
-                    cuboid3.translateYCoor(-2.5);
-                    thirdCube.translateYCoor(-2.5);
-                    count.getAndIncrement();
+                        cuboid3.translateYCoor(2.5);
+                        thirdCube.translateYCoor(2.5);
+                        cuboid3.rotateAroundAxis(p, Math.toRadians(angle));
+                        thirdCube.rotateAroundAxis(p, Math.toRadians(angle));
+                        cuboid3.translateYCoor(-2.5);
+                        thirdCube.translateYCoor(-2.5);
+                        count.getAndIncrement();
+                    }
 
-                    cuboid3.translateYCoor(2.5);
-                    thirdCube.translateYCoor(2.5);
-                    Point3D z = new Point3D(1, 0, 0);
-                    MatrixOperations.rotPoint(z, Math.toRadians(rotateAngle));
-                    cuboid3.rotateAroundAxis(z, Math.toRadians(0.2));
-                    thirdCube.rotateAroundAxis(z, Math.toRadians(0.2));
-                    cuboid3.translateYCoor(-2.5);
-                    thirdCube.translateYCoor(-2.5);
-
+                    if (thirdLeft.isSelected() || thirdRight.isSelected()) {
+                        float angle = thirdLeft.isSelected() ? -0.2f : 0.2f;
+                        cuboid3.translateYCoor(2.5);
+                        thirdCube.translateYCoor(2.5);
+                        Point3D z = new Point3D(1, 0, 0);
+                        MatrixOperations.rotPoint(z, Math.toRadians(rotateAngle));
+                        cuboid3.rotateAroundAxis(z, Math.toRadians(angle));
+                        thirdCube.rotateAroundAxis(z, Math.toRadians(angle));
+                        cuboid3.translateYCoor(-2.5);
+                        thirdCube.translateYCoor(-2.5);
+                    }
                     cuboid.updateFigureMesh();
                     cuboid2.updateFigureMesh();
                     cuboid3.updateFigureMesh();
@@ -299,17 +349,20 @@ public class CuboidTest extends Application {
                     thirdCube.updateSphereCoors();
 
                     //rotate plat 
-                    Point3D oX = new Point3D(1, 0, 0);
-                    flat.rotateAroundAxis(oX, Math.toRadians(0.2));
-                    flat2.rotateAroundAxis(oX, Math.toRadians(0.2));
-                    flat3.rotateAroundAxis(oX, Math.toRadians(0.2));
-                    flat4.rotateAroundAxis(oX, Math.toRadians(0.2));
-                    CuboidMesh.rorateAroundAxis(floatNormalVector, oX, Math.toRadians(0.2));
+                    if (flatLeft.isSelected() || flatRight.isSelected()) {
+                        float angle = flatLeft.isSelected() ? -0.2f : 0.2f;
+                        Point3D oX = new Point3D(1, 0, 0);
+                        flat.rotateAroundAxis(oX, Math.toRadians(angle));
+                        flat2.rotateAroundAxis(oX, Math.toRadians(angle));
+                        flat3.rotateAroundAxis(oX, Math.toRadians(angle));
+                        flat4.rotateAroundAxis(oX, Math.toRadians(angle));
+                        CuboidMesh.rorateAroundAxis(floatNormalVector, oX, Math.toRadians(angle));
 
-                    flat.updateFigureMesh();
-                    flat2.updateFigureMesh();
-                    flat3.updateFigureMesh();
-                    flat4.updateFigureMesh();
+                        flat.updateFigureMesh();
+                        flat2.updateFigureMesh();
+                        flat3.updateFigureMesh();
+                        flat4.updateFigureMesh();
+                    }
                     group.getChildren().removeAll(lines);
                     lines.clear();
                     List<Point3D> res = new ArrayList<>();
@@ -318,18 +371,21 @@ public class CuboidTest extends Application {
                     if (tmp.size() > 2) {
                         tmp.add(tmp.get(0));
                     }
+                    swap(tmp);
                     PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineFirst);
                     res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
                     if (tmp.size() > 2) {
                         tmp.add(tmp.get(0));
                     }
+                    swap(tmp);
                     PolyLine3D lineSecond = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineSecond);
                     res.addAll(tmp = thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
                     if (tmp.size() > 2) {
                         tmp.add(tmp.get(0));
                     }
+                    swap(tmp);
                     PolyLine3D lineThird = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);
@@ -345,25 +401,12 @@ public class CuboidTest extends Application {
             }
         };
         timerEffect.start();
-        primaryStage.setTitle("F(X)yz - Cuboid Test");
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
     }
+
     private List<Sphere> pointsToView = new ArrayList<>();
     private List<PolyLine3D> lines = new ArrayList<>();
     private Float rotateAngle = 0f;
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Point3D q = new Point3D(20, 20, -20);
-        Point3D U = new Point3D(0, 0, 1);
-        Point3D res = CuboidMesh.intersectFlatAndLine(q, U, new Point3D(0, 0, 0), new Point3D(0, 1, 0));
-        System.out.println(res == null ? "null" : res.toString());
-        launch(args);
-    }
 
     private PointsWrapper firstCube;
     private PointsWrapper secondCube;
@@ -445,4 +488,34 @@ public class CuboidTest extends Application {
     private void rotatePointsForFirstCube() {
 
     }
+
+    private void swap(List<Point3D> tmp) {
+        if (tmp.size() > 4) {
+            while (true) {
+                int k = 0;
+                for (int i = 0; i < tmp.size() - 3; i++) {
+                    for (int j = i + 1; j < tmp.size() - 1; j++) {
+                        if (Intersection(tmp.get(i), tmp.get(i + 1), tmp.get(j), tmp.get(j + 1))) {
+                            Point3D b = tmp.get(i + 1);
+                            tmp.set(i + 1, tmp.get(j));
+                            tmp.set(j, b);
+                            k = 1;
+                        }
+                    }
+                }
+                if (k == 0) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean Intersection(Point3D a1, Point3D a2, Point3D b1, Point3D b2) {
+        float v1 = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
+        float v2 = (b2.x - b1.x) * (a2.y - b1.y) - (b2.y - b1.y) * (a2.x - b1.x);
+        float v3 = (a2.x - a1.x) * (b1.y - a1.y) - (a2.y - a1.y) * (b1.x - a1.x);
+        float v4 = (a2.x - a1.x) * (b2.y - a1.y) - (a2.y - a1.y) * (b2.x - a1.x);
+        return (v1 * v2 < 0) && (v3 * v4 < 0);
+    }
+
 }
