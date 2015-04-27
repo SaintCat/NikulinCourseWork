@@ -382,18 +382,20 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     CuboidMesh test = new CuboidMesh(10, 10, 1);
-                    test.transferPointsToPoints(tmp);
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
                     PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineFirst);
-                    meshs.add(test);
                     res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
 //                    if (tmp.size() > 2) {
 //                        tmp.add(tmp.get(0));
 //                    }
 //                    swap(tmp);
                     test = new CuboidMesh(10, 10, 1);
-                    test.transferPointsToPoints(tmp);
-                    meshs.add(test);
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
                     PolyLine3D lineSecond = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineSecond);
                     res.addAll(tmp = thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
@@ -402,8 +404,9 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     test = new CuboidMesh(10, 10, 1);
-                    test.transferPointsToPoints(tmp);
-                    meshs.add(test);
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
                     PolyLine3D lineThird = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);

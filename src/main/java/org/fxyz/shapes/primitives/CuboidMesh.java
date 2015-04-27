@@ -425,8 +425,12 @@ public class CuboidMesh extends TexturedMesh {
         System.out.println(listVertices);
     }
 
-    public void transferPointsToPoints(List<Point3D> points) {
+    public boolean transferPointsToPoints(List<Point3D> points) {
+
         int n = points.size();
+        if (n == 0) {
+            return false;
+        }
         int step = listVertices.size() / n;
         int current = 0;
         int zz = 0;
@@ -438,12 +442,29 @@ public class CuboidMesh extends TexturedMesh {
             point.z = to.z;
             if (current >= step) {
                 current = 0;
-                if (points.size()-1 > zz) {
+                if (points.size() - 1 > zz) {
                     zz++;
                 }
             }
         }
         current += step;
+        int i = 0;
+//        for (; i < points.size(); i++) {
+//            Point3D to = listVertices.get(i);
+//            Point3D point = points.get(i);
+//            point.x = to.x;
+//            point.y = to.y;
+//            point.z = to.z;
+//        }
+//        Point3D to = points.get(points.size() - 1);
+//        for (; i < listVertices.size(); i++) {
+//
+//            Point3D point = listVertices.get(i);
+//            point.x = to.x;
+//            point.y = to.y;
+//            point.z = to.z;
+//        }
         setMesh(createMesh());
+        return true;
     }
 }
