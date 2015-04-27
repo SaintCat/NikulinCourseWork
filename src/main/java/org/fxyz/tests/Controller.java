@@ -382,17 +382,18 @@ public class Controller implements Initializable {
 //                        tmp.add(tmp.get(0));
 //                    }
 //                    swap(tmp);
+                    createPlatForPoints(tmp);
                     CuboidMesh test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
-                    test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    Collections.reverse(tmp);
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
+//                    test = new CuboidMesh(10, 10, 1);
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    Collections.reverse(tmp);
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
                     PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineFirst);
                     res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
@@ -401,16 +402,17 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
-                    test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    Collections.reverse(tmp);
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
+//                    test = new CuboidMesh(10, 10, 1);
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    Collections.reverse(tmp);
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
+                    createPlatForPoints(tmp);
                     PolyLine3D lineSecond = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineSecond);
                     res.addAll(tmp = thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
@@ -418,17 +420,18 @@ public class Controller implements Initializable {
 //                        tmp.add(tmp.get(0));
 //                    }
 //                    swap(tmp);
-                    test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
-                    test = new CuboidMesh(10, 10, 1);
-                    test.setMaterial(new PhongMaterial(Color.BLACK));
-                    Collections.reverse(tmp);
-                    if (test.transferPointsToPoints(tmp)) {
-                        meshs.add(test);
-                    }
+//                    test = new CuboidMesh(10, 10, 1);
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
+//                    test = new CuboidMesh(10, 10, 1);
+//                    test.setMaterial(new PhongMaterial(Color.BLACK));
+//                    Collections.reverse(tmp);
+//                    if (test.transferPointsToPoints(tmp)) {
+//                        meshs.add(test);
+//                    }
+                    createPlatForPoints(tmp);
                     PolyLine3D lineThird = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);
@@ -441,6 +444,17 @@ public class Controller implements Initializable {
                     group.getChildren().addAll(lines);
                     group.getChildren().addAll(meshs);
                     lastEffect = now;
+                }
+            }
+
+            private void createPlatForPoints(List<Point3D> tmp) {
+                for (int i = 0; i < tmp.size(); i += 2) {
+                    CuboidMesh test = new CuboidMesh(10, 10, 1, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
+                    Collections.rotate(tmp, 1);
                 }
             }
         };
