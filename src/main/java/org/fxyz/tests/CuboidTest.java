@@ -315,10 +315,14 @@ public class CuboidTest extends Application {
                     List<Point3D> res = new ArrayList<>();
                     List<Point3D> tmp;
                     res.addAll(tmp = firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    if (tmp.size() > 2) {
-                        tmp.add(tmp.get(0));
-                    }
+//                    if (tmp.size() > 2) {
+//                        tmp.add(tmp.get(0));
+//                    }
                     PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
+                    CuboidMesh test = new CuboidMesh(10,10,10);
+//                    test.transferPointsToPoints(tmp);
+                    group.getChildren().add(test);
+                    
                     lines.add(lineFirst);
                     res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
                     if (tmp.size() > 2) {

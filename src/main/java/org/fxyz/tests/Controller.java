@@ -16,13 +16,13 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.SubScene;
+import javafx.scene.chart.Axis;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -138,7 +138,7 @@ public class Controller implements Initializable {
         // IMAGE
 //        cuboid.setTextureModeImage(getClass().getResource("res/netCuboid.png").toExternalForm());
         // DENSITY
-        cuboid.setTextureModeVertices3D(256*256,p->(double)p.x*p.y*p.z);
+        cuboid.setTextureModeVertices3D(256 * 256, p -> (double) p.x * p.y * p.z);
         // FACES
 //        cuboid.setTextureModeFaces(1530);
 
@@ -371,28 +371,39 @@ public class Controller implements Initializable {
                         flat4.updateFigureMesh();
                     }
                     group.getChildren().removeAll(lines);
+                    group.getChildren().removeAll(meshs);
                     lines.clear();
+                    meshs.clear();
                     List<Point3D> res = new ArrayList<>();
                     List<Point3D> tmp;
                     res.addAll(tmp = firstCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    if (tmp.size() > 2) {
-                        tmp.add(tmp.get(0));
-                    }
-                    swap(tmp);
+//                    if (tmp.size() > 2) {
+//                        tmp.add(tmp.get(0));
+//                    }
+//                    swap(tmp);
+                    CuboidMesh test = new CuboidMesh(10, 10, 1);
+                    test.transferPointsToPoints(tmp);
                     PolyLine3D lineFirst = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineFirst);
+                    meshs.add(test);
                     res.addAll(tmp = secondCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    if (tmp.size() > 2) {
-                        tmp.add(tmp.get(0));
-                    }
-                    swap(tmp);
+//                    if (tmp.size() > 2) {
+//                        tmp.add(tmp.get(0));
+//                    }
+//                    swap(tmp);
+                    test = new CuboidMesh(10, 10, 1);
+                    test.transferPointsToPoints(tmp);
+                    meshs.add(test);
                     PolyLine3D lineSecond = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineSecond);
                     res.addAll(tmp = thirdCube.getIntersectPointsWithFlat(new Point3D(0, 0, 0), floatNormalVector));
-                    if (tmp.size() > 2) {
-                        tmp.add(tmp.get(0));
-                    }
-                    swap(tmp);
+//                    if (tmp.size() > 2) {
+//                        tmp.add(tmp.get(0));
+//                    }
+//                    swap(tmp);
+                    test = new CuboidMesh(10, 10, 1);
+                    test.transferPointsToPoints(tmp);
+                    meshs.add(test);
                     PolyLine3D lineThird = new PolyLine3D(tmp, 0.1f, Color.RED);
                     lines.add(lineThird);
                     group.getChildren().removeAll(pointsToView);
@@ -403,6 +414,7 @@ public class Controller implements Initializable {
                     }
                     group.getChildren().addAll(pointsToView);
                     group.getChildren().addAll(lines);
+                    group.getChildren().addAll(meshs);
                     lastEffect = now;
                 }
             }
@@ -411,6 +423,7 @@ public class Controller implements Initializable {
 
     }
 
+    private List<CuboidMesh> meshs = new ArrayList<>();
     private List<Sphere> pointsToView = new ArrayList<>();
     private List<PolyLine3D> lines = new ArrayList<>();
     private Float rotateAngle = 0f;

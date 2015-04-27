@@ -420,8 +420,30 @@ public class CuboidMesh extends TexturedMesh {
         }
         return c;
     }
-    
+
     public void printPoints() {
         System.out.println(listVertices);
+    }
+
+    public void transferPointsToPoints(List<Point3D> points) {
+        int n = points.size();
+        int step = listVertices.size() / n;
+        int current = 0;
+        int zz = 0;
+        for (int i = current; i < listVertices.size(); i++, current++) {
+            Point3D point = listVertices.get(i);
+            Point3D to = points.get(zz);
+            point.x = to.x;
+            point.y = to.y;
+            point.z = to.z;
+            if (current >= step) {
+                current = 0;
+                if (points.size()-1 > zz) {
+                    zz++;
+                }
+            }
+        }
+        current += step;
+        setMesh(createMesh());
     }
 }
