@@ -7,6 +7,7 @@ package org.fxyz.tests;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -129,7 +130,7 @@ public class Controller implements Initializable {
         group = new Group();
         group.getChildren().add(cameraTransform);
         cuboid = new CuboidMesh(5f, 10f, 5f, 1);
-        cuboid.setDrawMode(DrawMode.FILL);
+        cuboid.setDrawMode(DrawMode.LINE);
         cuboid.setCullFace(CullFace.BACK);
         // BACK
         cuboid.setTextureModeNone(Color.ROYALBLUE);
@@ -156,7 +157,7 @@ public class Controller implements Initializable {
         cuboid2 = new CuboidMesh(10f, 5f, 5f, 1);
         cuboid2.translateYCoor(-2.5);
         cuboid2.translateXCoor(7.5);
-        cuboid2.setDrawMode(DrawMode.FILL);
+        cuboid2.setDrawMode(DrawMode.LINE);
         cuboid2.setCullFace(CullFace.BACK);
         // BACK
         cuboid2.setTextureModeNone(Color.YELLOW);
@@ -186,7 +187,7 @@ public class Controller implements Initializable {
         cuboid3.translateYCoor(-2.5);
         cuboid3.translateXCoor(15);
         cuboid3.translateZCoor(2.5);
-        cuboid3.setDrawMode(DrawMode.FILL);
+        cuboid3.setDrawMode(DrawMode.LINE);
         cuboid3.setCullFace(CullFace.BACK);
         // BACK
         cuboid3.setTextureModeNone(Color.ROYALBLUE);
@@ -382,6 +383,13 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     CuboidMesh test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
+                    test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    Collections.reverse(tmp);
                     if (test.transferPointsToPoints(tmp)) {
                         meshs.add(test);
                     }
@@ -393,6 +401,13 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
+                    test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    Collections.reverse(tmp);
                     if (test.transferPointsToPoints(tmp)) {
                         meshs.add(test);
                     }
@@ -404,6 +419,13 @@ public class Controller implements Initializable {
 //                    }
 //                    swap(tmp);
                     test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    if (test.transferPointsToPoints(tmp)) {
+                        meshs.add(test);
+                    }
+                    test = new CuboidMesh(10, 10, 1);
+                    test.setMaterial(new PhongMaterial(Color.BLACK));
+                    Collections.reverse(tmp);
                     if (test.transferPointsToPoints(tmp)) {
                         meshs.add(test);
                     }
