@@ -24,6 +24,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.SubScene;
 import javafx.scene.chart.Axis;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -133,13 +134,13 @@ public class Controller implements Initializable {
         cuboid.setDrawMode(DrawMode.LINE);
         cuboid.setCullFace(CullFace.BACK);
         // BACK
-        cuboid.setTextureModeNone(Color.ROYALBLUE);
+        cuboid.setTextureModeNone(Color.RED);
 //        cuboid.translateXCoor(7);
 //        cuboid.translateYCoor(-3);
         // IMAGE
 //        cuboid.setTextureModeImage(getClass().getResource("res/netCuboid.png").toExternalForm());
         // DENSITY
-        cuboid.setTextureModeVertices3D(256 * 256, p -> (double) p.x * p.y * p.z);
+//        cuboid.setTextureModeVertices3D(256 * 256, p -> (double) p.x * p.y * p.z);
         // FACES
 //        cuboid.setTextureModeFaces(1530);
 
@@ -160,7 +161,7 @@ public class Controller implements Initializable {
         cuboid2.setDrawMode(DrawMode.LINE);
         cuboid2.setCullFace(CullFace.BACK);
         // BACK
-        cuboid2.setTextureModeNone(Color.YELLOW);
+        cuboid2.setTextureModeNone(Color.LIME);
         // IMAGE
 //        cuboid.setTextureModeImage(getClass().getResource("res/netCuboid.png").toExternalForm());
         // DENSITY
@@ -596,6 +597,25 @@ public class Controller implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    void cullfaceChangedAction(ActionEvent event) {
+        if (((CheckBox) event.getSource()).isSelected()) {
+            cuboid.setDrawMode(DrawMode.FILL);
+            cuboid2.setDrawMode(DrawMode.FILL);
+            cuboid3.setDrawMode(DrawMode.FILL);
+            for (CuboidMesh ss : meshs) {
+                ss.setDrawMode(DrawMode.FILL);
+            }
+        } else {
+            cuboid.setDrawMode(DrawMode.LINE);
+            cuboid2.setDrawMode(DrawMode.LINE);
+            cuboid3.setDrawMode(DrawMode.LINE);
+            for (CuboidMesh ss : meshs) {
+                ss.setDrawMode(DrawMode.LINE);
+            }
+        }
     }
 
 }

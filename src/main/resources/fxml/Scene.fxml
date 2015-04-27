@@ -24,5 +24,6 @@
           <Region />
         </root>
       </SubScene>
+      <CheckBox layoutX="968.0" layoutY="192.0" mnemonicParsing="false" onAction="#cullfaceChangedAction" text="Закрасить" />
    </children>
 </AnchorPane>
